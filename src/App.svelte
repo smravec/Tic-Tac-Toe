@@ -1,4 +1,4 @@
-<script lang="ts">
+<script >
   import gridEval from "./gridEval.js"
   gridEval()
   let grid = [["","",""],["","",""],["","",""]];
