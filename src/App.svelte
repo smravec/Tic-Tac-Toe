@@ -1,5 +1,7 @@
 <script >
   import gridEval from "./gridEval.js"
+  import { onMount } from "svelte"
+
   gridEval()
   let grid = [["","",""],["","",""],["","",""]];
   let turn = "X"
@@ -20,23 +22,18 @@
     }
   }
 
+  onMount(() => {
+    console.log("this is on mount")
+    const canvas = document.querySelector('canvas')
+    const context = canvas.getContext('2d');
+  })
+
 </script>
 
 <main>
   
-  <div class="title">Select box to play</div>
-
-  <div>
-    {#each grid as row ,index1}
-    <div>
-    {#each row as item,index2}  
-      <button on:click={() => {gridUpdate(index1,index2)}} class="box">
-	{item}
-      </button> 
-    {/each}
-    </div>
-    {/each}
-  </div>
+  <canvas>
+  </canvas>
 
 </main>
 
@@ -48,23 +45,10 @@
     align-items: center;
     height: 100vh;
   }
-  .title {
-    color: white;
-  }
-  
-  .box{
-    width: 100px;
-    height:100px;
-    padding: 10px;
-    background-color: transparent;
-    border: 1px solid #99999988;
-    margin: 3px;
-    color: white;
-    font-size: 30px;
-    vertical-align: middle;
-  }
 
-  .box:hover {
-    background-color:white;
-  }
+  canvas{
+    border: white solid 1px;
+    width: 50vw;
+    height: 50vw;
+  } 
 </style>
