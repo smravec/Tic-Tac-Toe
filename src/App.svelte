@@ -1,12 +1,20 @@
 <script >
+  //icons
+  import FaRobot from 'svelte-icons/fa/FaRobot.svelte'
+  import FaUser from 'svelte-icons/fa/FaUser.svelte'
+
+  //my functions
   import gridEval from "./gridEval.js"
 
   //gridEval()
   let grid = [["","",""],["","",""],["","",""]];
   let turn = "X"
   let won = false
-  let score_ai = 0
+  let score_p1 = 0
+  let score_p2 = 0
   let score_human = 0
+  let score_ai = 0
+  let mode = "ai"
 
   //phone compat var
   let pressed = [["","",""],["","",""],["","",""]];
@@ -36,14 +44,40 @@
 <main>
   
   <div class="menu"> 
-    Score {score_human}:{score_ai}
+    
+    <div class="score-container">
+      <button class="ai-human-btn"
+	      on:click={()=>{
+		if(mode === "human"){
+		  mode = "ai"
+		}
+		else{
+		  mode = "human"
+		}
+		grid = [["","",""],["","",""],["","",""]]
+		pressed = [["","",""],["","",""],["","",""]]
+		won=false
+	      }}>
+	      {#if mode === "ai"}
+		<FaRobot/>
+	      {:else}
+		<FaUser/>
+	      {/if}
+      </button>
+      
+      <div>
+	Score {mode === "ai" ? score_human : score_p1}:{ mode === "ai" ? score_ai : score_p2}
+      </div>
+    </div>
+    
     <button class="restart-btn" 
 	    on:click={()=>{
 	      grid = [["","",""],["","",""],["","",""]]
 	      pressed = [["","",""],["","",""],["","",""]]
 	      won=false}}>
-    {won == false ? "reset" : "restart"}
+    {won == false ? "reset" : "new game"}
     </button>
+    
   </div>
 
   <div class="gridContainer">
@@ -56,7 +90,7 @@
 		setTimeout(() => { gridUpdate(index1,index2, pressed,"pressed") }, 300);
 		}}} 
 	      class={grid[index1][index2] === "O" || grid[index1][index2] === "X" ? "box" : "box-empty"}
-	      id={pressed[index1][index2] === "O" || pressed[index1][index2] === "X" ? "pressed" : ""}>
+	      id={pressed[index1][index2] === "O" || pressed[index1][index2] === "X" ? "pressed" : "not-pressed"}>
 	{item}
       </button> 
     {/each}
@@ -84,6 +118,29 @@
     flex-direction:column;
     font-size:30px;
   }
+  
+  .score-container{
+    display:flex;
+  }
+
+  .ai-human-btn{
+    margin-right:10px;
+    margin-top:2px;
+    padding: 5px 5px 5px 5px;
+    width:2.75em;
+    height:2.75em;
+    background:transparent;
+    color: #fffffffd;
+    border:1px solid gray;
+    border-radius: 5px;
+    cursor:pointer;
+    vertical-align: middle;
+  }
+
+  .ai-human-btn:active{
+    background:white;
+    color:black;
+  }
 
   .restart-btn{
     font-size:20px;
@@ -94,6 +151,11 @@
     padding: 5px;
     color:white;
     cursor:pointer;
+  }
+
+  .restart-btn:active{
+    color: black;
+    background:white;
   }
   
   .gridContainer{
@@ -111,18 +173,33 @@
     font-size: 30px;
     vertical-align: middle;
   }
+  
+  .box-empty{
+    cursor:pointer;
+  }
 
   .box-empty:hover{
-    background-color: #00000055;;
+    background-color: #00000099;
+    content: "test";
   }
      
   #pressed:active {
     animation: notEmpty 0.1s forwards;
   }
-
+  
   @keyframes notEmpty{
     100%{
       background-color: #990000;
+    }
+  }
+
+  #not-pressed:active{
+    animation: Empty 0.1s forwards; 
+  }
+  
+  @keyframes Empty{
+    100%{
+      background-color: #009900;
     }
   }
 
@@ -131,6 +208,11 @@
       flex-direction: row;
       top: 7vh;
       font-size:30px;
+    }
+
+    .restart-btn{
+      margin-top:0px;
+      margin-left:20px;
     }
 
     .gridContainer{
