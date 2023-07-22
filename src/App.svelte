@@ -125,7 +125,7 @@
 
   .ai-human-btn{
     margin-right:10px;
-    margin-top:2px;
+    margin-top:1px;
     padding: 5px 5px 5px 5px;
     width:2.75em;
     height:2.75em;
