@@ -8,11 +8,17 @@
   let score_ai = 0
   let score_human = 0
 
-  function gridUpdate(i1, i2) {
-    if( grid[i1][i2] === ""){
+  //phone compat var
+  let pressed = [["","",""],["","",""],["","",""]];
+
+  function gridUpdate(i1, i2, array, which_array) {
+    if( array[i1][i2] === ""){
       //place x or o at selected spot
-      grid[i1][i2] = turn
-      
+      array[i1][i2] = turn 
+    }
+    if (which_array === "grid")
+    {
+      grid = array
       //change the turn
       if(turn === "X"){
 	turn = "O"
@@ -20,6 +26,9 @@
       else{
 	turn = "X"
       }
+    }
+    else{
+      pressed = array
     }
   }
 </script>
@@ -29,7 +38,10 @@
   <div class="menu"> 
     Score {score_human}:{score_ai}
     <button class="restart-btn" 
-	    on:click={()=>{grid = [["","",""],["","",""],["","",""]]; won=false}}>
+	    on:click={()=>{
+	      grid = [["","",""],["","",""],["","",""]]
+	      pressed = [["","",""],["","",""],["","",""]]
+	      won=false}}>
     {won == false ? "reset" : "restart"}
     </button>
   </div>
@@ -38,8 +50,13 @@
     {#each grid as row ,index1}
     <div>
     {#each row as item,index2}  
-      <button on:click={() => { if(won === false){gridUpdate(index1,index2)}}} 
-	      class={grid[index1][index2] === "O" || grid[index1][index2] === "X" ? "box" : "box-empty"}>
+      <button on:click={() => { 
+	      if(won === false){
+		gridUpdate(index1,index2,grid,"grid") 
+		setTimeout(() => { gridUpdate(index1,index2, pressed,"pressed") }, 300);
+		}}} 
+	      class={grid[index1][index2] === "O" || grid[index1][index2] === "X" ? "box" : "box-empty"}
+	      id={pressed[index1][index2] === "O" || pressed[index1][index2] === "X" ? "pressed" : ""}>
 	{item}
       </button> 
     {/each}
@@ -99,7 +116,7 @@
     background-color: #00000055;;
   }
      
-  .box:active {
+  #pressed:active {
     animation: notEmpty 0.1s forwards;
   }
 
