@@ -15,22 +15,22 @@
     if( array[i1][i2] === ""){
       //place x or o at selected spot
       array[i1][i2] = turn 
-    }
-    if (which_array === "grid")
-    {
-      grid = array
-      //change the turn
-      if(turn === "X"){
-	turn = "O"
+    
+      if (which_array === "grid")
+      {
+	grid = array
+	//change the turn
+	if(turn === "X"){
+	  turn = "O"
+        }
+        else{
+	  turn = "X"
+	}
       }
       else{
-	turn = "X"
+	pressed = array
       }
-    }
-    else{
-      pressed = array
-    }
-  }
+    }}
 </script>
 
 <main>
