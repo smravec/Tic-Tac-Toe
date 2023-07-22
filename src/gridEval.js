@@ -20,15 +20,12 @@ export default function gridEval(grid){
     
     //put the connected into array if any
     if( counter_X === 3 || counter_O === 3){
-      
       if(counter_X === 3){
 	who_won = "X"
       }
-      
       else if (counter_O === 3){
 	who_won = "O"
       }
-    
       for(let row = 0; row < connectedSquares.length; row++){
 	connectedSquares[row][column] = who_won
       }
@@ -58,15 +55,12 @@ export default function gridEval(grid){
     
     //put the connected into array if any
     if( counter_X === 3 || counter_O === 3){
-      
       if(counter_X === 3){
 	who_won = "X"
       }
-      
       else if (counter_O === 3){
 	who_won = "O"
       }
-    
       for(let column = 0; column < connectedSquares.length; column++){
 	connectedSquares[row][column] = who_won
       }
@@ -110,14 +104,12 @@ export default function gridEval(grid){
    
     //put the connected into array if any
     if( counter_X === 3 || counter_O === 3){
-      
       if(counter_X === 3){
 	who_won = "X"
       }
       else if (counter_O === 3){
 	who_won = "O"
       }
-
       if(diagonal === 0){
 	for( let item = 0; item < grid.length; item++){
 	  connectedSquares[item][item] = who_won 

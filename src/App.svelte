@@ -7,9 +7,11 @@
   import gridEval from "./gridEval.js"
 
   //gridEval()
-  let grid = [["","",""],["","",""],["","",""]];
+  let grid = [["","",""],["","",""],["","",""]]
+  let connectedSquares = [["","",""],["","",""],["","",""]] 
   let turn = "X"
   let won = false
+  let move = 0
   let score_p1 = 0
   let score_p2 = 0
   let score_human = 0
@@ -57,6 +59,8 @@
 		grid = [["","",""],["","",""],["","",""]]
 		pressed = [["","",""],["","",""],["","",""]]
 		won=false
+		turn = "X"
+		connectedSquares = [["","",""],["","",""],["","",""]]
 	      }}>
 	      {#if mode === "ai"}
 		<FaRobot/>
@@ -72,9 +76,13 @@
     
     <button class="restart-btn" 
 	    on:click={()=>{
-	      grid = [["","",""],["","",""],["","",""]]
-	      pressed = [["","",""],["","",""],["","",""]]
-	      won=false}}>
+	      grid=[["","",""],["","",""],["","",""]]
+	      pressed=[["","",""],["","",""],["","",""]]
+	      won=false
+	      turn="X"
+	      connectedSquares=[["","",""],["","",""],["","",""]]
+	      move = 0
+	      }}>
     {won == false ? "reset" : "new game"}
     </button>
     
@@ -88,10 +96,35 @@
 	      if(won === false){
 		gridUpdate(index1,index2,grid,"grid") 
 		setTimeout(() => { gridUpdate(index1,index2, pressed,"pressed") }, 300);
-		console.log(gridEval(grid))
-		}}} 
+	        move = move + 1
+		let gameEval = gridEval(grid)
+		if(gameEval.winner !== ""){
+		  won = true;
+		  connectedSquares = gameEval.grid
+		  if(mode === "ai"){
+		    if(gameEval.winner === "X"){
+		      score_ai = score_ai + 1
+		    }
+		    else{
+		      score_human = score_human + 1
+		    }
+		  }
+		else{
+		  if(gameEval.winner === "X"){
+		    score_p1 = score_p1 + 1
+		  }
+		  else{
+		    score_p2 = score_p2 + 1 
+		  }
+		}
+	      }
+	      else if(move === 9){
+		won = true
+	      }
+	    }}} 
 	      class={grid[index1][index2] === "O" || grid[index1][index2] === "X" ? "box" : "box-empty"}
-	      id={pressed[index1][index2] === "O" || pressed[index1][index2] === "X" ? "pressed" : "not-pressed"}>
+	      id={won === false ? pressed[index1][index2] !== "" ? "pressed" : "not-pressed" : connectedSquares[index1][index2] !== "" ? "box-connected" : ""}
+	      disabled={won === true ? true : false}>
 	{item}
       </button> 
     {/each}
@@ -173,15 +206,10 @@
     color: white;
     font-size: 30px;
     vertical-align: middle;
-  }
-  
-  .box-empty{
-    cursor:pointer;
-  }
+  } 
 
-  .box-empty:hover{
-    background-color: #00000099;
-    content: "test";
+  #box-connected{
+    background: #009900; 
   }
      
   #pressed:active {
@@ -192,6 +220,14 @@
     100%{
       background-color: #990000;
     }
+  }
+  
+  #not-pressed{
+    cursor:pointer;
+  }
+
+  #not-pressed:hover {
+    background-color: #00000099;
   }
 
   #not-pressed:active{
