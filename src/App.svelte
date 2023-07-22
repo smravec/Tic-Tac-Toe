@@ -14,7 +14,7 @@
   let score_p2 = 0
   let score_human = 0
   let score_ai = 0
-  let mode = "ai"
+  let mode = "human"
 
   //phone compat var
   let pressed = [["","",""],["","",""],["","",""]];
@@ -88,6 +88,7 @@
 	      if(won === false){
 		gridUpdate(index1,index2,grid,"grid") 
 		setTimeout(() => { gridUpdate(index1,index2, pressed,"pressed") }, 300);
+		console.log(gridEval(grid))
 		}}} 
 	      class={grid[index1][index2] === "O" || grid[index1][index2] === "X" ? "box" : "box-empty"}
 	      id={pressed[index1][index2] === "O" || pressed[index1][index2] === "X" ? "pressed" : "not-pressed"}>
@@ -225,5 +226,4 @@
       height: calc(50vh/3);
     }
   }
-
 </style>
