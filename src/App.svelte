@@ -209,7 +209,13 @@
   } 
 
   #box-connected{
-    background: #009900; 
+    animation: connect 0.4s forwards; 
+  }
+
+  @keyframes connect {
+    100%{
+      background: #007700;
+    }
   }
      
   #pressed:active {
