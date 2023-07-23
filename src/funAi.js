@@ -1,11 +1,5 @@
 export default function funAi(grid){
-  //Check if there are any squares that I can win
-  
-
-  //Check if there are any squares that cant block opponent win
-
- 
-  //Else play random move
+  //Plays random move
   while(true){
     let random_row = Math.floor(Math.random() * 3);
     let random_column = Math.floor(Math.random() * 3);
