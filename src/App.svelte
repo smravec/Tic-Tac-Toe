@@ -123,17 +123,18 @@
     {#each row as item,index2}  
       <button on:click={() => { 
 	      if(won === false){
-		gridUpdate(index1,index2,grid,"grid") 
-		setTimeout(() => { gridUpdate(index1,index2, pressed,"pressed") }, 300);
-		nextMove()
-
-		//play the ai move
-		if( mode === "ai" && won === false){
-		  let aiMove = funAi(grid)
-		  gridUpdate(aiMove.row, aiMove.column,grid,"grid") 
-		  setTimeout(() => { gridUpdate(aiMove.row, aiMove.column, pressed,"pressed") }, 700);
+		if(grid[index1][index2] === ""){
+		  gridUpdate(index1,index2,grid,"grid") 
+		  setTimeout(() => { gridUpdate(index1,index2, pressed,"pressed") }, 300);
 		  nextMove()
-		}
+
+		  //play the ai move
+		  if( mode === "ai" && won === false){
+		    let aiMove = funAi(grid)
+		    gridUpdate(aiMove.row, aiMove.column,grid,"grid") 
+		    setTimeout(() => { gridUpdate(aiMove.row, aiMove.column, pressed,"pressed") }, 700);
+		    nextMove()
+		}}
 	      }}} 
 	      class={grid[index1][index2] === "O" || grid[index1][index2] === "X" ? "box" : "box-empty"}
 	      id={won === false ? pressed[index1][index2] !== "" ? "pressed" : "not-pressed" : connectedSquares[index1][index2] !== "" ? "box-connected" : ""}
