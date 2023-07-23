@@ -5,8 +5,8 @@
 
   //my functions
   import gridEval from "./gridEval.js"
+  import funAi from "./funAi.js"
 
-  //gridEval()
   let grid = [["","",""],["","",""],["","",""]]
   let connectedSquares = [["","",""],["","",""],["","",""]] 
   let turn = "X"
@@ -41,6 +41,35 @@
 	pressed = array
       }
     }}
+
+  function nextMove(){
+    move = move + 1
+    let gameEval = gridEval(grid)
+    if(gameEval.winner !== ""){
+      won = true;
+      connectedSquares = gameEval.grid
+      if(mode === "ai"){
+	if(gameEval.winner === "X"){
+	  score_human = score_human + 1
+	}
+	else{
+	  score_ai = score_ai + 1
+	}
+      }
+      else{
+	if(gameEval.winner === "X"){
+	  score_p1 = score_p1 + 1
+	}
+	else{
+	  score_p2 = score_p2 + 1 
+	}
+      }
+    }
+    else if(move === 9){
+      won = true
+    }
+  }
+
 </script>
 
 <main>
@@ -96,32 +125,16 @@
 	      if(won === false){
 		gridUpdate(index1,index2,grid,"grid") 
 		setTimeout(() => { gridUpdate(index1,index2, pressed,"pressed") }, 300);
-	        move = move + 1
-		let gameEval = gridEval(grid)
-		if(gameEval.winner !== ""){
-		  won = true;
-		  connectedSquares = gameEval.grid
-		  if(mode === "ai"){
-		    if(gameEval.winner === "X"){
-		      score_ai = score_ai + 1
-		    }
-		    else{
-		      score_human = score_human + 1
-		    }
-		  }
-		else{
-		  if(gameEval.winner === "X"){
-		    score_p1 = score_p1 + 1
-		  }
-		  else{
-		    score_p2 = score_p2 + 1 
-		  }
+		nextMove()
+
+		//play the ai move
+		if( mode === "ai" && won === false){
+		  let aiMove = funAi(grid)
+		  gridUpdate(aiMove.row, aiMove.column,grid,"grid") 
+		  setTimeout(() => { gridUpdate(aiMove.row, aiMove.column, pressed,"pressed") }, 700);
+		  nextMove()
 		}
-	      }
-	      else if(move === 9){
-		won = true
-	      }
-	    }}} 
+	      }}} 
 	      class={grid[index1][index2] === "O" || grid[index1][index2] === "X" ? "box" : "box-empty"}
 	      id={won === false ? pressed[index1][index2] !== "" ? "pressed" : "not-pressed" : connectedSquares[index1][index2] !== "" ? "box-connected" : ""}
 	      disabled={won === true ? true : false}>
