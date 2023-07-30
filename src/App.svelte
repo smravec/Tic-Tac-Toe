@@ -89,6 +89,7 @@
 		pressed = [["","",""],["","",""],["","",""]]
 		won=false
 		turn = "X"
+		move = 0
 		connectedSquares = [["","",""],["","",""],["","",""]]
 	      }}>
 	      {#if mode === "ai"}
